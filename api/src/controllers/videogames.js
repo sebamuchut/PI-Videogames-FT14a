@@ -16,7 +16,6 @@ Incluir los géneros asociados */
 function Get_All_Games (req, res, next) {
     const all_games = axios.get(`${RAWG_URL_GAMES}${YOUR_API_KEY}`);
     const all_games_db = Videogame.findAll();
-    const all_games_concat = []
     Promise.all([all_games, all_games_db])
         .then(videogames => {
             let [all_games, all_games_db] = videogames
@@ -34,13 +33,14 @@ function Get_All_Games (req, res, next) {
                                 axios.get(videogames4.data.next)
                                     .then(videogames5 => {
                                         all_games_db = [...all_games_db, ...videogames5.data.results]
-                                        res.json(all_games_db.length)
+                                        res.json(all_games_db)
                                     })
 
                             })
                         })
                 })
         })
+        .catch((error) => next(error))
 
 
 
