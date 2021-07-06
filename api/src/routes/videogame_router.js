@@ -13,6 +13,7 @@ Debe traer solo los datos pedidos en la ruta de detalle de videojuego
 Incluir los géneros asociados */
 router
     .get('/', Get_All_Games)
+    // .get('/:id_videogame', )
 
 
 module.exports = router;
