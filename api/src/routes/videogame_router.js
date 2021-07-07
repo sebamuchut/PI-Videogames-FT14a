@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { Get_All_Games } = require('../controllers/videogames')
+const { Get_All_Games, Videogame_detail } = require('../controllers/videogames')
 const router = Router();
 /*[ ] GET /videogames:
 Obtener un listado de los primeras 15 videojuegos
@@ -13,7 +13,7 @@ Debe traer solo los datos pedidos en la ruta de detalle de videojuego
 Incluir los géneros asociados */
 router
     .get('/', Get_All_Games)
-    // .get('/:id_videogame', )
+    .get('/:id_videogame', Videogame_detail)
 
 
 module.exports = router;

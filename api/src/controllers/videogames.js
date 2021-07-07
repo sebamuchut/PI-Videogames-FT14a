@@ -20,7 +20,6 @@ function Get_All_Games (req, res, next) {
         .then(videogames => {
             let [all_games, all_games_db] = videogames
             all_games_db = [...all_games_db, ...all_games.data.results]
-            console.log(all_games_db.length)
             axios.get(all_games.data.next)
                 .then(videogames2 => {
                     all_games_db = [...all_games_db, ...videogames2.data.results]
@@ -33,7 +32,34 @@ function Get_All_Games (req, res, next) {
                                 axios.get(videogames4.data.next)
                                     .then(videogames5 => {
                                         all_games_db = [...all_games_db, ...videogames5.data.results]
-                                        res.json(all_games_db)
+                                       
+                                        var hundred_games = all_games_db.map(el => ({
+                                            id: el.id, name: el.name, rating: el.rating, released: el.released, 
+                                            background_image: el.background_image, platforms: el.platforms, genres: el.genres 
+                                        }))
+
+                                        //modifying platforms and genres
+                                        hundred_games.map(el => {
+                                            if(el.platforms){
+                                                el.platforms = el.platforms.map(e => e.platform.name)
+                                            }
+                                            if(el.genres){
+                                                el.genres = el.genres.map(e => ({id: e.id, name: e.name}))
+                                            }
+                                        })
+                                        
+
+                                        if(req.query.name){
+                                            const name = req.query.name
+                                            const filtered = hundred_games.filter(el => el.name.toLowerCase().includes(name.toLowerCase()))
+                                            if(filtered.length === 0){
+                                                return res.send('videogame not found')
+                                            } else {
+                                                return res.json(filtered.slice(0, 15))
+                                            }
+                                        }
+
+                                        return res.json(hundred_games.slice(0, 15))
                                     })
 
                             })
@@ -46,6 +72,23 @@ function Get_All_Games (req, res, next) {
 
 }
 
+function Videogame_detail (req, res, next) {
+    if(req.params){
+            const id = req.params.id_videogame
+            axios.get(`${RAWG_URL_GAMES}/${id}${YOUR_API_KEY}`)
+                .then(game => {
+                    const { id, name, background_image, genres, description, released, rating, platforms } = game.data
+                    const platform = platforms.map(el => el.platform.name)
+                    const genre = genres.map(el => ({id: el.id, name: el.name}))
+                    const for_detail = {id, name, background_image, genre, description, released, rating, platform}
+                    return res.json(for_detail)
+                })
+                .catch((error) => next(error))
+        } 
+
+}
+
 module.exports = {
-    Get_All_Games
+    Get_All_Games,
+    Videogame_detail
 }
