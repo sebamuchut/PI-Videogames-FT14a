@@ -77,7 +77,8 @@ function Get_All_Games (req, res, next) {
 function Videogame_detail (req, res, next) {
     if(req.params){
             const id = req.params.id_videogame
-            if(typeof id === 'number'){
+            if(id.length < 8){
+                console.log('searching id in API')
                 axios.get(`${RAWG_URL_GAMES}/${id}${YOUR_API_KEY}`)
                     .then(game => {
                         const { id, name, background_image, genres, description, released, rating, platforms } = game.data
@@ -86,15 +87,14 @@ function Videogame_detail (req, res, next) {
                         const for_detail = {id, name, background_image, genre, description, released, rating, platform}
                         return res.json(for_detail)
                     })
-                    .catch((error) => next(error))
-            }else{
+                    .catch((error) => res.send('Error: Videogame not found'))
+            }else {
+                console.log('searching id in database')
                 Videogame.findByPk(id)
                     .then(game =>{
-                        console.log('game in database')
-                        console.log(id)
-                        console.log(game)
-                        res.json('res funciona')
+                        return res.json(game.dataValues)
                     })
+                    .catch(error => res.send('Error: Videogame not found'))
             }
 
         } 
