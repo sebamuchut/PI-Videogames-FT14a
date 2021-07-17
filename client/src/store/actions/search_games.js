@@ -7,7 +7,6 @@ export function search_games (name) {
     return (dispatch) => {
         return axios.get(GAMES_SEARCH_URL + name)
         .then(response => {
-            console.log(response.data)
             dispatch({ type: SEARCH_GAMES, payload: response.data });
         })
         .catch(error => {
