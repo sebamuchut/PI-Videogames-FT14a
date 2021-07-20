@@ -1,4 +1,21 @@
 .img{
-    width: 400px;
-    height: 400px;
+    width: 800px;
+}
+.main_div {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 50px;
+    padding-right: 50px;
+    margin-block: 10px;
+    margin-left: 100px;
+    margin-right: 100px;
+}
+.detail_div{
+    background-color: lightgray;
+    opacity: 0.7;
+}
+
+h1{
+    color: white;
+    font-size: 70px;
 }

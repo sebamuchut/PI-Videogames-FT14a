@@ -1,8 +1,117 @@
-.img {
-    height: 250px;
-    width: 250px;
+.card img {
+    width: 220px;
+    height: 200px;
+    margin-top: 3px;
+    margin-left: 3px;
+    margin-right: 3px;
+    
+
+
 }
+.card:hover{
+  opacity: 0.9;
+  transform: scale(1.02);
+   }
 
 .card {
-    background-color: lightgray;
+    /* display: flex; */
+    justify-content: center;
+    background-color: black;
+    opacity: 0.5;
+    margin-right: 2px;
+    margin-left: 2px;
+    margin-top: 10px;
+    padding-top: 10px;
+    align-items: center;
+    width: 250px;
+    padding-left: 1px;
+    padding-right: 1px;
+    color: white;
+    
 }
+.cards {
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.link {
+  color: white;
+}
+
+
+li
+    {
+        display: inline-block;
+        justify-content: center;
+        background: transparent;
+        padding: 2px 2px;
+        margin-right: 15px;
+        border-radius: 0px;
+        /* border-color: white; */
+        font-family: sans-serif;
+        font-size: 1.1rem;
+        min-width: 20px;
+        text-align: center;
+        user-select: none;
+    }
+li:hover {
+  background-color: lightgray
+  
+}
+
+.title_main {
+  color: white;
+  display: flex;
+  justify-content: left;
+  font-size: 30px;
+}
+
+.bar {
+    margin-top: 25px;
+    display: flex;
+    justify-content:space-evenly;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    
+}
+
+
+
+
+.button_paginate {
+    color: white;
+    display: flexbox;
+    flex-direction: row;
+}
+.select_div {
+    display: flexbox;
+    flex-direction: row;
+}
+
+/* .pagination {
+    display: flex;
+    justify-content: center;
+    padding-top: 1px;
+    ul{
+      list-style: none;
+      padding: 0px;
+      display: flex;
+  
+      li{
+        padding: 10px 15px;
+        margin-right: 4px;
+        border-radius: 4px;
+        font-family: sans-serif;
+        color: #fff;
+        font-size: 1.1rem;
+        min-width: 20px;
+        text-align: center;
+        user-select: none;
+      }
+    }
+  } */

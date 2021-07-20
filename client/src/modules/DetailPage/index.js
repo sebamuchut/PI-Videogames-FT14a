@@ -59,15 +59,17 @@ function Show_detail({id}) {
     
     if(!id) return <div>no game detail! something went wrong!</div>
     return (
-        <div>
+        <div className='main_div'>
+            <h1 >{detail.name}</h1>
             <img src={detail.image} className='img' alt='game'/>
-            <h1>{detail.name}</h1>
-            <p>{detail.description}</p>
-            <p>Released: {detail.released}</p>
-            <p>Rating: {detail.rating}</p>
-            <p>Genres: {detail.genres}</p>
-            <p>Platforms: {detail.platforms}</p>
-            <NavLink to='/main'>Go back!</NavLink>
+            <div className='detail_div'>
+                <p>{detail.description}</p>
+                <p>Released: {detail.released}</p>
+                <p>Rating: {detail.rating}</p>
+                <p>Genres: {detail.genres}</p>
+                <p>Platforms: {detail.platforms}</p>
+            </div>
+            <NavLink to='/main' className='link'>Go back!</NavLink>
         </div>
 
     )

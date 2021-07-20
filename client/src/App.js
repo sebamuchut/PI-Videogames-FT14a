@@ -5,7 +5,10 @@ import LandingPage from './modules/LandingPage';
 import DetailPage from './modules/DetailPage';
 import PostGame from './modules/PostGame'
 
+
 function App() {
+
+
   return (
     <div className="App">
       <Route path='/' exact component={LandingPage} />

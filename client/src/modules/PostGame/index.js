@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import './PostGame.css';
 import axios from 'axios'
 import { GAME_POST_URL } from '../../constant.js'
 import { useDispatch } from 'react-redux';
 import { get_all_games } from '../../store/actions/get_games'
 import { useHistory } from 'react-router-dom';
+import {} from './post_game.css'
+import { NavLink } from "react-router-dom"
 
 // import CheckBox from './checkbox';
 
@@ -108,7 +109,10 @@ function Post_game (){
         genre_body = genre_body.map(e => [e])
         const platforms = plat.filter(el => el.isChecked).map(el => el.value)
         const name = form.name;
-        const rating = form.rating;
+        var rating = form.rating;
+        console.log(typeof(rating))
+        rating = parseInt(rating);
+        console.log(typeof(rating))
         const released = form.released;
         const description = form.description
         const values = {name, rating, description, released, genre_body, platforms}
@@ -131,56 +135,61 @@ function Post_game (){
 
 
     return (
-        <div>
-
-            <form>
-                <div>
-                    <label>Name: </label>
-                        <input
-                            type="text" 
-                            name="name" 
-                            placeholder='enter name...' 
-                            onChange={HandleinputChange}
-                        />
+        <div className='div_main'>
+            <NavLink to='/main' className='link'>Go back!</NavLink>
+            <form className='form'>
+                <div className='div_input'>
+                    <div >
+                        <label>Name: </label>
+                            <input
+                                type="text" 
+                                name="name" 
+                                placeholder='enter name...' 
+                                onChange={HandleinputChange}
+                            />
+                    </div>
+                
+                    <div>
+                        <label>Released: </label>
+                            <input
+                                type="text" 
+                                name="released" 
+                                placeholder='enter released date...' 
+                                onChange={HandleinputChange}
+                            />
+                    </div>
+                    <div>
+                        <label>Rating: </label>
+                            <input
+                                type="number" 
+                                name="rating" 
+                                placeholder='enter rating...' 
+                                // value={input.username}  
+                                // onChange={}
+                                // className=
+                            />
+                    </div>
                 </div>
-                <div>
+                <br></br>
+                <div className='div_description'>
                     <label>Description: </label>
                         <input
+                            className = 'input_description'
                             type="text" 
                             name="description" 
                             placeholder='enter description...' 
                             onChange={HandleinputChange}
                         />
                 </div>
-                <div>
-                    <label>Released: </label>
-                        <input
-                            type="text" 
-                            name="released" 
-                            placeholder='enter released date...' 
-                            onChange={HandleinputChange}
-                        />
-                </div>
-                <div>
-                    <label>Rating: </label>
-                        <input
-                            type="text" 
-                            name="rating" 
-                            placeholder='enter rating...' 
-                            // value={input.username}  
-                            // onChange={}
-                            // className=
-                        />
-                </div>
             </form>
             <div className='check'>
                 <h3> Check Genre/s of the game</h3>
-                <input type="checkbox"  onClick={handleAllChecked} value="checkedall" /> Check / Uncheck All
+                <input type="checkbox"  className='checkbox' onClick={handleAllChecked} value="checkedall" /> Check / Uncheck All
                     <ul>
                          { 
                             post.map((el) => {
                               return ( 
-                                <li>
+                                <li className='check_list'>
                                     <input 
                                     key={el.id} 
                                     onClick={(event)=>handleCheck(event)} 
@@ -199,7 +208,7 @@ function Post_game (){
                          { 
                             plat.map((el) => {
                               return ( 
-                                <li>
+                                <li className='check_list'>
                                     <input 
                                     key={el.id} 
                                     onClick={(event)=>handlePlat(event)} 
@@ -211,8 +220,8 @@ function Post_game (){
                           }
                     </ul>
             </div>
-            <div>
-              <button type="submit" onClick={handleSubmit}>ADD GAME</button>
+            <div className='div_button'>
+              <button type="submit" className='button_add' onClick={handleSubmit}>ADD GAME</button>
             </div>
         </div>
 )

@@ -1,0 +1,23 @@
+.title {
+    font-size: 100px;
+    color: white;
+}
+
+
+
+.main_div {
+    margin-top: 100px;
+}
+
+.link {
+    color: white;
+}
+
+body {
+    background-color: black;
+    background-image: url(https://images.unsplash.com/photo-1552820728-8b83bb6b773f?ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8Z2FtaW5nfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80);
+    /* background-position: center; */
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: absolute;
+}
