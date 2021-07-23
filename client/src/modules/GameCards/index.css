@@ -1,23 +1,24 @@
 .card img {
     width: 220px;
-    height: 200px;
+    height: 170px;
     margin-top: 3px;
     margin-left: 3px;
     margin-right: 3px;
-    
-
-
 }
 .card:hover{
-  opacity: 0.9;
-  transform: scale(1.02);
+  opacity: 1;
+  transform: scale(1.04);
    }
+#button_reload {
+  display: flex;
+  justify-content: right;
+}
 
 .card {
     /* display: flex; */
     justify-content: center;
     background-color: black;
-    opacity: 0.5;
+    opacity: 0.8;
     margin-right: 2px;
     margin-left: 2px;
     margin-top: 10px;
@@ -32,7 +33,6 @@
 .cards {
   display: flex;
   justify-content: center;
-  justify-items: center;
   flex-direction: row;
   flex-wrap: wrap;
 }
@@ -57,16 +57,19 @@ li
         text-align: center;
         user-select: none;
     }
-li:hover {
-  background-color: lightgray
-  
+
+li:active {
+  background-color: lightgray;
 }
+
 
 .title_main {
   color: white;
   display: flex;
   justify-content: left;
-  font-size: 30px;
+  font-size: 40px;
+  padding-block: 1px;
+  margin-block: 5px;
 }
 
 .bar {
@@ -76,10 +79,34 @@ li:hover {
     align-items: center;
     flex-direction: row;
     flex-wrap: wrap;
-
-    
+}
+.bar button {
+  font-size: 16px;
+  /* padding: 5px 5px; */
+  padding-block: 5px;
+  color: white;
+  border-color: white;
+  border-width: 3px;
+  border-radius: 5px;
+  background-color: black;
+  margin-right: 3px;
 }
 
+#form_gamecard {
+  text-align: center;
+}
+#form_gamecard input {
+  font-size: 16px;
+  /* width: 60%; */
+  padding-block: 5px;
+  margin: 5px 5px;
+  box-sizing: border-box;
+  color: white;
+  border-color: white;
+  border-width: 3px;
+  border-radius: 5px;
+  background-color: black;
+}
 
 
 
@@ -88,11 +115,27 @@ li:hover {
     display: flexbox;
     flex-direction: row;
 }
+
 .select_div {
     display: flexbox;
     flex-direction: row;
 }
-
+.select_div option {
+  font-size: 16px;
+}
+.select_div select {
+  font-family:Arial, Helvetica, sans-serif;
+  padding-block: 5px;
+  font-size: 16px;
+  color: white;
+  border-width: 3px;
+  border-color: white;
+  /* border-color: rgb(247, 187, 76); */
+  /* border-width: 3px; */
+  box-shadow: 1px white;
+  border-radius: 5px;
+  background-color: black;
+}
 /* .pagination {
     display: flex;
     justify-content: center;

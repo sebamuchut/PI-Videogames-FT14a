@@ -4,6 +4,7 @@ import axios from 'axios'
 import { GAMES_ALL_URL } from '../../constant'
 import { } from './DetailPage.css'
 import { NavLink } from "react-router-dom"
+import parse from 'html-react-parser'
 /**[ ] Los campos mostrados en la ruta principal para cada videojuegos (imagen, nombre, y géneros)
 [ ] Descripción
 [ ] Fecha de lanzamiento
@@ -41,7 +42,7 @@ function Show_detail({id}) {
                 setDetail({
                     name: response.data.name,
                     image: response.data.background_image,
-                    description: response.data.description,
+                    description: parse(response.data.description),
                     released: response.data.released,
                     rating: response.data.rating,
                     genres: response.data.genre.map(el=> ' - ' + el.name),
@@ -59,15 +60,18 @@ function Show_detail({id}) {
     
     if(!id) return <div>no game detail! something went wrong!</div>
     return (
-        <div className='main_div'>
+        <div id='div_main_detail'>
+            <NavLink to='/main' className='link'>Go back!</NavLink>
             <h1 >{detail.name}</h1>
             <img src={detail.image} className='img' alt='game'/>
-            <div className='detail_div'>
-                <p>{detail.description}</p>
+            <div id='detail_div'>
+                <div id='description'>{detail.description}</div>
+                <>
                 <p>Released: {detail.released}</p>
                 <p>Rating: {detail.rating}</p>
                 <p>Genres: {detail.genres}</p>
                 <p>Platforms: {detail.platforms}</p>
+                </>
             </div>
             <NavLink to='/main' className='link'>Go back!</NavLink>
         </div>

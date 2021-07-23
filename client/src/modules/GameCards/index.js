@@ -1,4 +1,3 @@
-import { get_all_games } from '../../store/actions/get_games'
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react'
 import { search_games } from '../../store/actions/search_games';
@@ -6,20 +5,22 @@ import {} from './index.css'
 import { NavLink, useHistory } from 'react-router-dom';
 import { clear_filtered } from '../../store/actions/clear_filtered';
 import { find_genre } from '../../store/actions/filter_genre';
-import { order_AZ } from '../../store/actions/order';
 
 function Getting_all_games () {
-  const games = useSelector(state => state.games_all)
-  const filtered = useSelector(state => state.games_filtered)
-  const genres = useSelector(state => state.genres_all)
-  const dispatch = useDispatch()
-  const { push } = useHistory()
+  const games = useSelector(state => state.games_all) //bring global state 'games_all' 
+  const filtered = useSelector(state => state.games_filtered) //bring gloabal state 'games_filtered'. In this state a collect searched games
+  const genres = useSelector(state => state.genres_all) //bring global state 'genres_all'
+  const dispatch = useDispatch() //to trigger a state change
+  const { push } = useHistory() //to redirect to another route
 
+  useEffect(() => {
+    dispatch(find_genre()) //to use the selector of genres
+    console.log('genres filter...')
+  }, [])
 
-  const [value, setValue] = useState('')
-  const [filter, setFilter] = useState('')
-  const [created, setCreated] = useState('')
-  const [games_local, setGames_local] = useState()
+  const [value, setValue] = useState('') //to handle search function
+  const [filter, setFilter] = useState('') //filter by genre
+  const [created, setCreated] = useState('') //to store created games
 
   //pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -27,33 +28,43 @@ function Getting_all_games () {
   //pagination
   const indexOfLastGame = currentPage * gamesPerPage;
   const indexOfFirstGame = indexOfLastGame - gamesPerPage;
+  
+  var currentGames; //it will render the games
 
-  var currentGames 
   if(filter) {
     games.forEach(el=> el.genres.map(e => {if (Array.isArray(e.name)){
-      e.name=e.name[0]
+      e.name=e.name[0] //something that I should fix in the back-end
     }}))
-    let filtered_games_bygenre = []
+    var filtered_games_bygenre = [] //to store the games filtered by genre
     games.map(el => el.genres.map(e => {if (e.name ===filter) filtered_games_bygenre.push(el)}))
-        currentGames = filtered_games_bygenre.slice(indexOfFirstGame, indexOfLastGame)
+      currentGames = filtered_games_bygenre.slice(indexOfFirstGame, indexOfLastGame)
   } else {
+    //if no genre is selected, dispay all games
     currentGames = games.slice(indexOfFirstGame, indexOfLastGame)
   }
+
   
-  var para_ver = 1
-  useEffect(() => {
-    // dispatch(get_all_games());
-    // dispatch(get_all_genres())
-    dispatch(find_genre())
-    console.log('genres filter...', para_ver++)
-  }, [])
+  
+  
 
 //Change page
 const paginate = (number) => {setCurrentPage(number)}
 //pagination function
 function pagination () {
   const pageNumbers = [];
-  for(let i=1; i <= Math.ceil(games.length / gamesPerPage); i++){
+  let number_of_cards;
+  if(created){
+    number_of_cards = created
+  }else if(filtered){
+    number_of_cards=filtered
+  }else if(filtered_games_bygenre){
+    number_of_cards=filtered_games_bygenre
+  }else{
+    number_of_cards=games
+  }
+
+  //create page numbers
+  for(let i=1; i <= Math.ceil(number_of_cards.length / gamesPerPage); i++){
     pageNumbers.push(i)
   }
   return(
@@ -74,59 +85,86 @@ function pagination () {
   
   function handleOnChange (e) {
     setValue(e.target.value)
-    if(e.target.value === ''){
+    if(e.target.value === ''){ //clear the state 'filtered' when noothing is written
       dispatch(clear_filtered())
     }
   }
 
   function handleOnSubmit (e) {
     e.preventDefault();
-    dispatch(search_games(value))
+    dispatch(search_games(value)) //trigger search function when clicked
   }
 
   function handleRoute () {
-    push('/post_game')
+    push('/post_game') //redirect to '/post_game' route when clicked
     dispatch(clear_filtered())
   }
 
   function handleSelect () {
     var select = document.getElementById("select");
-    dispatch(clear_filtered())
-    setCreated('')
     if(select.options[select.selectedIndex].value === 'none'){
-      setFilter('')
+      setFilter('') //clear filter of genre en 'All genres' is selected 
     } else {
-      setFilter(select.options[select.selectedIndex].value)
+      setFilter(select.options[select.selectedIndex].value) //add the selected genre into local state 'filter'
       dispatch(clear_filtered())
     }
-    setCurrentPage(1)
+    setCreated('')
+    dispatch(clear_filtered())
     
   }
 
   function handleCreated () {
-    var created_games = games.filter(el => el.id.length > 8)
-    setCreated(created_games)
-    // setFilter('')
+    var created_games = games.filter(el => el.id.length > 8) //I know created games own UUID as 'id'
+    if(created_games.length>0){
+      setCreated(created_games) //add created games to local state 'created'
+      setFilter('')
+
+    }
   }
 
   function handleA_Z () {
+    dispatch(clear_filtered())
+    setCreated('')
+    setFilter('')
     games.sort((a,b) => a.name.localeCompare(b.name))
+    setCurrentPage(1)
   }
   function handleZ_A () {
+    dispatch(clear_filtered())
+    setCreated('')
+    setFilter('')
     games.sort((a,b) => b.name.localeCompare(a.name))
+    setCurrentPage(1)
   }
   function handle_rating_down () {
+    dispatch(clear_filtered())
+    setCreated('')
+    setFilter('')
     games.sort((a,b) => a.rating - b.rating)
+    setCurrentPage(1)
   }
   function handle_rating_up () {
+    dispatch(clear_filtered())
+    setCreated('')
+    setFilter('')
     games.sort((a,b) => b.rating - a.rating)
+    setCurrentPage(1)
   }
+
+  function reload () {
+    dispatch(clear_filtered())
+    setFilter('')
+    setCreated('')
+    
+  }
+  // console.log('este es currentGames: ', currentGames)
     
     return (
         <div className='bar_mother'>
           <h3 className='title_main'>Videogames Database</h3>
+          <button id='button_reload' onClick={reload}>Reload games</button>
           <div className='bar'>
-            <form  onSubmit={handleOnSubmit}>
+            <form id='form_gamecard' onSubmit={handleOnSubmit}>
               <input
                 type="text"
                 placeholder="Game..."
@@ -148,7 +186,8 @@ function pagination () {
                     <option id={el.id} value={el.name[0]}>{el.name[0]}</option>
                     )
                   })}
-                  <option id='none' value='none'>All games</option>
+                  <option id='none' value='none'>All genres</option>
+                  <option value="" disabled selected hidden>Filter by genre</option>
               </select>
             </div>
             <div>
@@ -163,7 +202,8 @@ function pagination () {
           <hr></hr>
           
           {
-             filtered ? <div className= 'cards'> 
+             filtered ? 
+             <div className= 'cards'> 
               {filtered.map(el => {
                 return (
                   <div key = {el.id}className= 'card'>
@@ -214,7 +254,8 @@ function pagination () {
           
           </div> : filtered === undefined && !filter ? 
             <div className='cards'>
-              {currentGames.map((el) =>{
+              { 
+              currentGames?.map((el) =>{
                 return (
                   <ul className = 'card' key = {el.id}>
                     <img src = {el.background_image} className = 'game_pic' alt= 'game pic' />,
@@ -233,7 +274,8 @@ function pagination () {
             </div>
           )
           }
-         
+          <hr></hr>
+          {pagination()}
         </div>
     )
    

@@ -11,6 +11,11 @@
 
 .link {
     color: white;
+    font-size: 20px;
+}
+.gif {
+    width: 200px;
+    padding-bottom: 3px;
 }
 
 body {
@@ -19,5 +24,5 @@ body {
     /* background-position: center; */
     background-size: cover;
     background-repeat: no-repeat;
-    position: absolute;
+    /* position: absolute; */
 }

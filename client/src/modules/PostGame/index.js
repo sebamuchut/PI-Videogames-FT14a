@@ -7,17 +7,6 @@ import { useHistory } from 'react-router-dom';
 import {} from './post_game.css'
 import { NavLink } from "react-router-dom"
 
-// import CheckBox from './checkbox';
-
-/**[ ] Un formulario controlado con los siguientes campos
-Nombre
-Descripción
-Fecha de lanzamiento
-Rating
-[ ] Posibilidad de seleccionar/agregar varios géneros
-[ ] Posibilidad de seleccionar/agregar varias plataformas
-[ ] Botón/Opción para crear un nuevo videojuego */
-
 function Post_game (){
     const dispatch = useDispatch()
     const { push } = useHistory()
@@ -29,6 +18,9 @@ function Post_game (){
         released: '',
         rating: ''
     })
+    const [newGenre, setNewGenre] = useState([]) //to add new genres
+    const [newplatform, setNewPlatform] = useState() //to add new platforms
+
     const [post, setPost] = useState([
         {id: 1, value: "Adventure", isChecked: false},
         {id: 2, value: "Shooter", isChecked: false},
@@ -70,6 +62,7 @@ function Post_game (){
     function handleAllChecked (event) {
         let newpost = post
         newpost.forEach(el => el.isChecked = event.target.checked) 
+        //change every 'isChecked' prop to true
         setPost([...newpost])
       }
 
@@ -78,7 +71,7 @@ function Post_game (){
         let newpost = post
         newpost.forEach(el => {
            if (el.value === event.target.value)
-              el.isChecked =  event.target.checked
+              el.isChecked =  event.target.checked // change to true only selected
         })
         setPost([...newpost])
       }
@@ -97,47 +90,68 @@ function Post_game (){
         })
         setPlat([...newplat])
       }
+
     function HandleinputChange (e) {
         setForm(values => ({
-            ...values, [e.target.name]: e.target.value
+            ...values, [e.target.name]: e.target.value //add name, released, rating, and description
         }))
     }
     
-    
+
     function handleSubmit (e) {
+        //handling genres
         var genre_body = post.filter(el => el.isChecked).map(el => el.value)
         genre_body = genre_body.map(e => [e])
+        if(newGenre.length>0) { //if a new genre is typed
+            let newGenre_array = newGenre[0].split(',')
+            newGenre_array.map(el => [el]).forEach(el => genre_body.push(el))
+        }
+        //handling platforms
         const platforms = plat.filter(el => el.isChecked).map(el => el.value)
+        if(newplatform) { // if a new platform is typed
+            let newplatform_array = newplatform.split(',')
+            newplatform_array.forEach(el => platforms.push(el))
+        }
+
         const name = form.name;
         var rating = form.rating;
-        console.log(typeof(rating))
-        rating = parseInt(rating);
-        console.log(typeof(rating))
+        rating = parseFloat(rating) //typed a string, but I need a floating number
         const released = form.released;
         const description = form.description
         const values = {name, rating, description, released, genre_body, platforms}
         e.preventDefault()
-        
-        // const arr = []
-        // axios.post(`${GAME_POST_URL}`, values)
-
-        axios.post(`${GAME_POST_URL}`, values)
-                            .then(res => {dispatch(get_all_games());})
-                            .then(res =>{
-                                alert('You submitted a game!')
-                                push('/main')
-                            })
-                            .catch(error => {
-                                alert('Oops! An error has occurred')
-                            })
-
+        if(!name){
+            alert('You must enter a NAME')
+        } else if (!description) {
+            alert('You must enter a DESCRIPTION')
+        } else if (platforms.length===0) {
+            alert('You must enter a PLATFORM')
+        } else {
+            axios.post(`${GAME_POST_URL}`, values) //do the post passing all the values 
+                .then(res => {dispatch(get_all_games());})
+                .then(res =>{
+                    alert('You submitted a game!')
+                    push('/main')
+                })
+                .catch(error => {
+                    alert('Oops! An error has occurred. Maybe that game already exists!')
+                })
+        }
+    }
+    function handleNewGenre (e) {
+        setNewGenre([e.target.value])
+    }
+    function handleNewPlatform (e) {
+        setNewPlatform(e.target.value)
     }
 
 
     return (
         <div className='div_main'>
-            <NavLink to='/main' className='link'>Go back!</NavLink>
-            <form className='form'>
+            <NavLink to='/main' id='linkback_detail' onClick={()=>dispatch(get_all_games())}>Go back!</NavLink>
+            <h2>Post a game</h2>
+            <p>Complete the form and add a game</p>
+            <form id='form_post'>
                 <div className='div_input'>
                     <div >
                         <label>Name: </label>
@@ -161,26 +175,24 @@ function Post_game (){
                     <div>
                         <label>Rating: </label>
                             <input
-                                type="number" 
+                                type="text" 
                                 name="rating" 
                                 placeholder='enter rating...' 
-                                // value={input.username}  
-                                // onChange={}
-                                // className=
+                                onChange={HandleinputChange}
                             />
                     </div>
-                </div>
-                <br></br>
                 <div className='div_description'>
                     <label>Description: </label>
-                        <input
+                        <textarea
                             className = 'input_description'
                             type="text" 
                             name="description" 
                             placeholder='enter description...' 
-                            onChange={HandleinputChange}
-                        />
+                            onChange={HandleinputChange}>
+                        </textarea>
                 </div>
+                </div>
+                
             </form>
             <div className='check'>
                 <h3> Check Genre/s of the game</h3>
@@ -200,6 +212,10 @@ function Post_game (){
                             }) 
                           }
                     </ul>
+                    <div>
+                        <label>Add new genre/s:</label>
+                        <input type='text' id='new_item' name='newGenre' placeholder='genre1, genre2...' onChange={handleNewGenre}/>
+                    </div>
             </div>
             <div className='check'>
                 <h3> Check Platform/s of the game</h3>
@@ -219,6 +235,10 @@ function Post_game (){
                             }) 
                           }
                     </ul>
+                    <div>
+                        <label>Add new platform/s:</label>
+                        <input type='text' id='new_item' name='newPlatform' placeholder='platform1, platform2...' onChange={handleNewPlatform}/>
+                    </div>
             </div>
             <div className='div_button'>
               <button type="submit" className='button_add' onClick={handleSubmit}>ADD GAME</button>
