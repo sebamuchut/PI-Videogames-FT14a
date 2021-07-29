@@ -15,8 +15,10 @@ function Getting_all_games () {
 
   useEffect(() => {
     dispatch(find_genre()) //to use the selector of genres
-    console.log('genres filter...')
   }, [])
+
+
+  if(!games) push('/')
 
   const [value, setValue] = useState('') //to handle search function
   const [filter, setFilter] = useState('') //filter by genre
@@ -25,11 +27,13 @@ function Getting_all_games () {
   //pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [gamesPerPage] = useState(15);
+  const [buttons, setButtons] = useState(false)
   //pagination
   const indexOfLastGame = currentPage * gamesPerPage;
   const indexOfFirstGame = indexOfLastGame - gamesPerPage;
   
   var currentGames; //it will render the games
+
 
   if(filter) {
     games.forEach(el=> el.genres.map(e => {if (Array.isArray(e.name)){
@@ -38,6 +42,10 @@ function Getting_all_games () {
     var filtered_games_bygenre = [] //to store the games filtered by genre
     games.map(el => el.genres.map(e => {if (e.name ===filter) filtered_games_bygenre.push(el)}))
       currentGames = filtered_games_bygenre.slice(indexOfFirstGame, indexOfLastGame)
+  } else if(buttons) {
+    //if no genre is selected, dispay all games
+    currentGames = games.slice(indexOfFirstGame, indexOfLastGame)
+    setButtons(false)
   } else {
     //if no genre is selected, dispay all games
     currentGames = games.slice(indexOfFirstGame, indexOfLastGame)
@@ -127,42 +135,34 @@ function pagination () {
     setCreated('')
     setFilter('')
     games.sort((a,b) => a.name.localeCompare(b.name))
-    setCurrentPage(1)
+    setButtons(true)
   }
   function handleZ_A () {
     dispatch(clear_filtered())
     setCreated('')
     setFilter('')
     games.sort((a,b) => b.name.localeCompare(a.name))
-    setCurrentPage(1)
+    setButtons(true)
   }
   function handle_rating_down () {
     dispatch(clear_filtered())
     setCreated('')
     setFilter('')
     games.sort((a,b) => a.rating - b.rating)
-    setCurrentPage(1)
+    setButtons(true)
   }
   function handle_rating_up () {
     dispatch(clear_filtered())
     setCreated('')
     setFilter('')
     games.sort((a,b) => b.rating - a.rating)
-    setCurrentPage(1)
+    setButtons(true)
   }
 
-  function reload () {
-    dispatch(clear_filtered())
-    setFilter('')
-    setCreated('')
-    
-  }
-  // console.log('este es currentGames: ', currentGames)
     
     return (
         <div className='bar_mother'>
           <h3 className='title_main'>Videogames Database</h3>
-          <button id='button_reload' onClick={reload}>Reload games</button>
           <div className='bar'>
             <form id='form_gamecard' onSubmit={handleOnSubmit}>
               <input
@@ -251,8 +251,8 @@ function pagination () {
                 )
               })
             }
-          
-          </div> : filtered === undefined && !filter ? 
+          </div>
+          : filtered === undefined && !filter ? 
             <div className='cards'>
               { 
               currentGames?.map((el) =>{

@@ -6,6 +6,7 @@ import { get_all_games } from '../../store/actions/get_games'
 import { useHistory } from 'react-router-dom';
 import {} from './post_game.css'
 import { NavLink } from "react-router-dom"
+import mario from './mario.png'
 
 function Post_game (){
     const dispatch = useDispatch()
@@ -145,20 +146,20 @@ function Post_game (){
         setNewPlatform(e.target.value)
     }
 
-
+    console.log(mario)
     return (
         <div className='div_main'>
             <NavLink to='/main' id='linkback_detail' onClick={()=>dispatch(get_all_games())}>Go back!</NavLink>
             <h2>Post a game</h2>
             <p>Complete the form and add a game</p>
-            <form id='form_post'>
+            <form id='form_post'autoComplete="off">
                 <div className='div_input'>
                     <div >
                         <label>Name: </label>
                             <input
                                 type="text" 
                                 name="name" 
-                                placeholder='enter name...' 
+                                placeholder=' enter name...' 
                                 onChange={HandleinputChange}
                             />
                     </div>
@@ -168,7 +169,7 @@ function Post_game (){
                             <input
                                 type="text" 
                                 name="released" 
-                                placeholder='enter released date...' 
+                                placeholder=' enter released date...' 
                                 onChange={HandleinputChange}
                             />
                     </div>
@@ -177,7 +178,7 @@ function Post_game (){
                             <input
                                 type="text" 
                                 name="rating" 
-                                placeholder='enter rating...' 
+                                placeholder=' enter rating...' 
                                 onChange={HandleinputChange}
                             />
                     </div>
@@ -187,7 +188,7 @@ function Post_game (){
                             className = 'input_description'
                             type="text" 
                             name="description" 
-                            placeholder='enter description...' 
+                            placeholder=' enter description...' 
                             onChange={HandleinputChange}>
                         </textarea>
                 </div>
@@ -214,7 +215,7 @@ function Post_game (){
                     </ul>
                     <div>
                         <label>Add new genre/s:</label>
-                        <input type='text' id='new_item' name='newGenre' placeholder='genre1, genre2...' onChange={handleNewGenre}/>
+                        <input type='text' autoComplete="off" id='new_item' name='newGenre' placeholder='genre1, genre2...' onChange={handleNewGenre}/>
                     </div>
             </div>
             <div className='check'>
@@ -237,11 +238,12 @@ function Post_game (){
                     </ul>
                     <div>
                         <label>Add new platform/s:</label>
-                        <input type='text' id='new_item' name='newPlatform' placeholder='platform1, platform2...' onChange={handleNewPlatform}/>
+                        <input type='text' autoComplete="off" id='new_item' name='newPlatform' placeholder='platform1, platform2...' onChange={handleNewPlatform}/>
                     </div>
             </div>
+            <br></br>
             <div className='div_button'>
-              <button type="submit" className='button_add' onClick={handleSubmit}>ADD GAME</button>
+              <button type="submit" className='button_add' onClick={handleSubmit}>Add Game!</button>
             </div>
         </div>
 )
