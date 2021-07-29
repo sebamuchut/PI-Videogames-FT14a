@@ -6,7 +6,6 @@ import { get_all_games } from '../../store/actions/get_games'
 import { useHistory } from 'react-router-dom';
 import {} from './post_game.css'
 import { NavLink } from "react-router-dom"
-import mario from './mario.png'
 
 function Post_game (){
     const dispatch = useDispatch()
