@@ -5,12 +5,16 @@ module.exports = (sequelize) => {
   // defino el modelo
   sequelize.define('videogame', {
     id: {
-      type: DataTypes.TEXT,
-      primaryKey: true
+      type: DataTypes.TEXT
+      ,
+      primaryKey: true,
+      unique: true,
+      allowNull: false
     },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true
     },
     description: {
       type: DataTypes.TEXT,
@@ -20,7 +24,7 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING
     },
     rating: {
-      type: DataTypes.INTEGER
+      type: DataTypes.DECIMAL
     },
     platforms: {
       type: DataTypes.ARRAY(DataTypes.TEXT),

@@ -7,19 +7,32 @@ Crea un videojuego en la base de datos */
 
 function Create_videogame (req, res, next) {
     const { name, description, released, rating, platforms, genre_body} = req.body
-    Genre.findOrCreate({
-        where: {name: genre_body},
-        defaults: {id: uuidv4()}
-    })
-        .then(genre => {
-            Videogame.create({name, description, rating, released, platforms, genre, id: uuidv4()})
-                .then((game) =>{
-                    console.log('A videogame has been created!')
-                    res.json(game)
-                })
-                .catch(error => next(error))
+   
+    console.log('genre_body: ', genre_body)
+
+    var arr = []
+    arr.push(Videogame.create({name, description, rating, released, platforms, id: uuidv4()}))
+    genre_body.map(el => 
+        arr.push(Genre.findOrCreate({where: {name: el}, defaults: {id: uuidv4()}}))
+        )
+   
+
+
+    Promise.all(arr) //TypeError: values.map is not a function
+        .then(response =>{
+            console.log('entra al promise.all')
+            const videogame = response.shift()
+            var genres = response.map(el => el[0])
+            videogame.addGenres(genres)
+            res.json(videogame)
         })
         .catch(error => next(error))
+
+
+
+
+    //
+        
 
 
 }

@@ -6,10 +6,15 @@ module.exports = (sequelize) => {
   sequelize.define('genre', {
     id: {
       type: DataTypes.TEXT,
-      primaryKey: true
+      primaryKey: true,
+      allowNull: false,
+      unique: true
     },
+
     name: {
-        type: DataTypes.STRING,
+        type: DataTypes.ARRAY(DataTypes.TEXT),
+        allowNull: false,
+        unique: true
         
     }
     
