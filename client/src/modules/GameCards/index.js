@@ -109,6 +109,7 @@ function pagination () {
   }
 
   function handleSelect () {
+    setCurrentPage(1)
     var select = document.getElementById("select");
     if(select.options[select.selectedIndex].value === 'none'){
       setFilter('') //clear filter of genre en 'All genres' is selected 
@@ -136,6 +137,7 @@ function pagination () {
     setFilter('')
     games.sort((a,b) => a.name.localeCompare(b.name))
     setButtons(true)
+    setCurrentPage(1)
   }
   function handleZ_A () {
     dispatch(clear_filtered())
@@ -143,6 +145,7 @@ function pagination () {
     setFilter('')
     games.sort((a,b) => b.name.localeCompare(a.name))
     setButtons(true)
+    setCurrentPage(1)
   }
   function handle_rating_down () {
     dispatch(clear_filtered())
@@ -150,6 +153,7 @@ function pagination () {
     setFilter('')
     games.sort((a,b) => a.rating - b.rating)
     setButtons(true)
+    setCurrentPage(1)
   }
   function handle_rating_up () {
     dispatch(clear_filtered())
@@ -157,6 +161,7 @@ function pagination () {
     setFilter('')
     games.sort((a,b) => b.rating - a.rating)
     setButtons(true)
+    setCurrentPage(1)
   }
 
     

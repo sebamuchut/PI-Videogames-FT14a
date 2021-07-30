@@ -145,7 +145,6 @@ function Post_game (){
         setNewPlatform(e.target.value)
     }
 
-    console.log(mario)
     return (
         <div className='div_main'>
             <NavLink to='/main' id='linkback_detail' onClick={()=>dispatch(get_all_games())}>Go back!</NavLink>

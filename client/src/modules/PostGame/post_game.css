@@ -8,7 +8,7 @@
 .div_main h2 {
     color: white;
     padding-top: 1px;
-    font-size: 35px;
+    font-size: 40px;
     margin-bottom: 1px;
 }
 .div_main p {
@@ -117,7 +117,7 @@ textarea {
 }
 .input_description {
     font-size: 20px;
-    width: 300px;
+    width: 500px;
     box-sizing:unset;
 }
 .button_add {
